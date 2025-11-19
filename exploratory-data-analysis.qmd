@@ -5,24 +5,39 @@ format: typst
 
 ### Question 1
 
-Put your question here.
+How many precincts were Democrat vs. Democrat?
 
 ### Answer 1
 
-Put your answer here.
+```{r}
+
+dem_vs_dem <- precinct_df |> filter(CNGDEM01 != 0 & CNGDEM02 != 0)
+
+nrow(dem_vs_dem)
+```
 
 ### Question 2
 
-Put your question here.
+How many precincts were Democrat vs. Republican?
 
 ### Answer 2
 
-Put your answer here.
+```{r}
+
+dem_vs_rep <- precinct_df |> filter(CNGDEM01 != 0 & CNGREP01 != 0)
+
+nrow(dem_vs_rep)
+```
 
 ### Question 3
 
-Put your question here.
+For which districts that were Democrat vs. Republican did Democrats take majority of votes? How many vote did they win by? 
 
 ### Answer 3
 
-Put your answer here.
+```{r}
+
+dem_vs_rep |> filter(CNGDEM01 > CNGREP01) |> group_by(CDDIST) |> filter(CDDIST != 0) |>
+
+    ggplot(aes(x = CDDIST, y = CNGDEM01-CNGREP01)) + geom_col() + theme_minimal() + labs(title = "Number of excess Democratic votes within winning districts", x = "District Number", y = "Number of Votes Democrats won by")
+```
